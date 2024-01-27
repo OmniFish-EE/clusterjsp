@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+<%--
 The MIT License
 
 Copyright 2024 OmniFish OU. All rights reserved.
@@ -22,27 +20,34 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+--%>
+<%@ page import="jakarta.servlet.http.Cookie" %>
 
--->
+<html>
+    <head><title>Clustering Information</title></head>
+    <body>
 
-
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">  
-  <display-name>clusterjsp</display-name>
-  <distributable/>
-  <servlet>
-    <display-name>ClusterTester</display-name>
-    <servlet-name>ClusterTester</servlet-name>
-    <jsp-file>/cluster.jsp</jsp-file>
-  </servlet>
-  <servlet>
-    <display-name>ResetSession</display-name>
-    <servlet-name>ResetSession</servlet-name>
-    <jsp-file>/resetSession.jsp</jsp-file>
-  </servlet>
-  <session-config>
-    <session-timeout>30</session-timeout>
-  </session-config>
-  <welcome-file-list>
-    <welcome-file>cluster.jsp</welcome-file>
-  </welcome-file-list>
-</web-app>
+        <% String reset = request.getParameter("reset");
+           if (reset != null) {
+               out.println("HTTP session was reset");
+                session.invalidate();
+                String cookieName = request.getServletContext().getSessionCookieConfig().getName();
+                Cookie cookie = new Cookie(cookieName, "deleted");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+           }
+        %>
+        <p>
+        <ul>
+            <li>Executed on GlassFish instance: <b><%= System.getProperty("com.sun.aas.instanceName") %></b></li>
+            <li>
+                Served From Server: <b><%= request.getServerName() %></b>
+            </li>
+        </ul>
+        </p>
+        <p>
+            Click on "Start new session" to start a new HTTP session
+        </p>
+        <a href="cluster.jsp" name="start-session">Start new session</A>
+</body>
+</html>
