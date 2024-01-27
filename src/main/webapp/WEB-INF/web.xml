@@ -44,9 +44,6 @@ THE SOFTWARE.
   </servlet>
   <session-config>
     <session-timeout>30</session-timeout>
-    <cookie-config>
-        <name>clusterjsp-sessionid</name>
-    </cookie-config>
   </session-config>
   <welcome-file-list>
     <welcome-file>cluster.jsp</welcome-file>
